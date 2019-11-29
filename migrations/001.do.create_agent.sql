@@ -12,7 +12,7 @@ CREATE TABLE agents(
     title TEXT,
     city TEXT NOT NULL,
     state TEXT NOT NULL,
-    zip INTEGER NOT NULL,
+    zip TEXT NOT NULL,
     office TEXT,
     bio TEXT,
     experience INTEGER,
