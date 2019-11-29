@@ -1,0 +1,3 @@
+ALTER TABLE agents DROP COLUMN IF EXISTS style;
+
+DROP TYPE IF EXISTS agent_phone_type;
