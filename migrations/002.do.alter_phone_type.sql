@@ -1,10 +1,9 @@
-CREATE TYPE agent_phone_type AS ENUM (
+CREATE TYPE phone_type AS ENUM (
     'cell',
     'business',
     'home',
     'fax'
 );
 
-ALTER TABLE agents
-    ADD COLUMN
-        style agent_phone_type;
+ALTER TABLE agent
+    ALTER COLUMN agent_phone_type TYPE phone_type;
