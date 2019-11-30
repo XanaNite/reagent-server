@@ -17,8 +17,6 @@ CREATE TABLE agents(
     bio TEXT,
     experience INTEGER,
     brokerage TEXT NOT NULL,
-    slogan TEXT,
-    price_min INTEGER,
-    price_max INTEGER
+    slogan TEXT
 );
 

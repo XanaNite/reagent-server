@@ -1,3 +1,4 @@
+DROP TYPE IF EXISTS phone_type;
 CREATE TYPE phone_type AS ENUM (
     'cell',
     'business',
@@ -6,4 +7,4 @@ CREATE TYPE phone_type AS ENUM (
 );
 
 ALTER TABLE agents
-    ALTER COLUMN agent_phone_type TYPE phone_type;
+    ALTER COLUMN agent_phone_type TYPE phone_type USING agent_phone_type::text::phone_type;
