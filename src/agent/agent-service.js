@@ -27,7 +27,7 @@ const AgentService = {
         'agt.user_name',
         'agt.password',
       )
-      .leftJoin(
+/*      .leftJoin(
         'agent_areas_served AS areas',
         'agt.id',
         'areas.agent_id',
@@ -52,7 +52,7 @@ const AgentService = {
         'agt.id',
         'recom.agent_id',
       )
-      .groupBy('agt.id')
+      .groupBy('agt.id')*/
   },
 
   getById(db, id) {

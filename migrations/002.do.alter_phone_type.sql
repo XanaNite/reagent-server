@@ -5,5 +5,5 @@ CREATE TYPE phone_type AS ENUM (
     'fax'
 );
 
-ALTER TABLE agent
+ALTER TABLE agents
     ALTER COLUMN agent_phone_type TYPE phone_type;
