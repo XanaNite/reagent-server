@@ -30,7 +30,15 @@ const AgentService = {
       )
       .groupBy('agt.id')*/
   },
-
+  insertAgent(db, newAgent){
+    return db
+      .insert(newAgent)
+      .into('agents')
+      .returning('*')
+      .then(rows =>{
+        return rows[0]
+      })
+  },
   getById(db, id) {
     return AgentService.getAllAgentInfo(db)
       .where('agt.id', id)

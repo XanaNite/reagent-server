@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const xss = require('xss')
 const AgentService = require('./agent-service');
@@ -36,6 +37,39 @@ agentRouter
     AgentService.getAllAgentInfo(req.app.get('db'))
       .then(agents => {
         res.json(agents.map(serializeAgent))
+      })
+      .catch(next)
+  })
+  .post(jsonParser, (req, res, next) =>{
+    const {first_name, last_name, agent_phone, agent_phone_type, agent_email, city, state, zip, brokerage, user_name, password} = req.body;
+    const newAgent = {first_name, last_name, agent_phone, agent_phone_type, agent_email, city, state, zip, brokerage, user_name, password};
+
+    for(const [key, value] of Object.entries(newAgent)){
+      if(value == null){
+          return res.status(400).json({
+              error: {message: `Missing '${key}' in request body`}
+          })
+      }
+    }
+
+    newAgent.title = title;
+    newAgent.office = office;
+    newAgent.bio = bio;
+    newAgent.experience = experience;
+    newAgent.slogan = slogan;
+    newAgent.date_created;
+    newAgent.date_modified;
+    newAgent.user_name;
+    newAgent.password;
+
+    const knexInstance = req.app.get('db')
+
+    AgentService.insertAgent(knexInstance, newAgent)
+      .then(agent =>{
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${agent.id}`))
+          .json(serializeAgent(agent))
       })
       .catch(next)
   })
