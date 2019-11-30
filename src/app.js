@@ -4,9 +4,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const {NODE_ENV} = require('./config');
-//const validateBearerToken = require('./validate-bearer-token')
-const errorHandler = require('./middleware/error-handler')
 //const uuid = require('uuid/v4');
+
+//const validateBearerToken = require('./validate-bearer-token');
+const agentRouter = require('./agent/agent-router');
+const errorHandler = require('./middleware/error-handler');
 
 const app = express();
 
@@ -23,9 +25,7 @@ app.use(cors());
 
 //app.use(validateBearerToken)
 
-app.get('/', (req, res) =>{
-    res.send('Hello, world!');
-})
+app.use('/api/agents', agentRouter);
 
 app.use(errorHandler)
 
