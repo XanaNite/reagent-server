@@ -41,8 +41,8 @@ agentRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) =>{
-    const {first_name, last_name, agent_phone, agent_phone_type, agent_email, city, state, zip, brokerage, user_name, password, title, office, bio, experience, slogan, date_created, date_modified} = req.body;
-    const newAgent = {first_name, last_name, agent_phone, agent_phone_type, agent_email, city, state, zip, brokerage, user_name, password};
+    const {first_name, last_name, user_name, password, agent_email, agent_phone} = req.body;
+    const newAgent = {first_name, last_name, user_name, password, agent_email, agent_phone};
 
     for(const [key, value] of Object.entries(newAgent)){
       if(value == null){
@@ -52,13 +52,18 @@ agentRouter
       }
     }
 
-    newAgent.title = title;
-    newAgent.office = office;
-    newAgent.bio = bio;
-    newAgent.experience = experience;
-    newAgent.slogan = slogan;
-    newAgent.date_created = date_created;
-    newAgent.date_modified = date_modified;
+    newAgent.agent_phone_type = null;
+    newAgent.city = null;
+    newAgent.state = null;
+    newAgent.zip = null;
+    newAgent.brokerage = null;
+    newAgent.title = null;
+    newAgent.office = null;
+    newAgent.bio = null;
+    newAgent.experience = null;
+    newAgent.slogan = null;
+    newAgent.date_created = new Date();
+    newAgent.date_modified = new Date();
 
     const knexInstance = req.app.get('db')
 
