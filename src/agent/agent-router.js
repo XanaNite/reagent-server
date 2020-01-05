@@ -74,10 +74,9 @@ agentRouter
 
 agentRouter
   .route('/:agent_id')
-  .all(requireAuth)
   .all(checkAgentExists)
   .get((req, res) => {
-    res.json(AgentService.serializeAgent(res.agent))
+    res.json(serializeAgent(res.agent))
   })
 
 /* async/await syntax for promises */

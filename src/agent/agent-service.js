@@ -41,7 +41,7 @@ const AgentService = {
   },
   getById(db, id) {
     return AgentService.getAllAgentInfo(db)
-      .where('agt.id', id)
+      .where('agents.id', id)
       .first()
   },
 }
