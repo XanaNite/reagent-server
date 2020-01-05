@@ -7,16 +7,16 @@ CREATE TABLE IF NOT EXISTS agents(
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     agent_phone TEXT NOT NULL,
-    agent_phone_type TEXT NOT NULL,
+    agent_phone_type TEXT,
     agent_email TEXT NOT NULL,
     title TEXT,
-    city TEXT NOT NULL,
-    state TEXT NOT NULL,
-    zip TEXT NOT NULL,
+    city TEXT,
+    state TEXT,
+    zip TEXT,
     office TEXT,
     bio TEXT,
     experience INTEGER,
-    brokerage TEXT NOT NULL,
+    brokerage TEXT,
     slogan TEXT
 );
 
