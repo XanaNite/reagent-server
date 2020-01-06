@@ -6,8 +6,8 @@ const jsonBodyParser = express.json()
 
 authRouter
   .post('/login', jsonBodyParser, (req, res, next) => {
-    const {user_name, password} = req.body
-    const loginUser = {user_name, password}
+    const {agent_email, password} = req.body
+    const loginUser = {agent_email, password}
 
     for(const [key, value] of Object.entries(loginUser))
         if(value == null)
@@ -15,28 +15,29 @@ authRouter
                 error: `Missing '${key}' in request body`
             })
 
-    AuthService.getUserWithUserName(
+    AuthService.getAgentWithEmail(
         req.app.get('db'),
-        loginUser.user_name
+        loginUser.agent_email
     )
         .then(dbUser =>{
             if(!dbUser)
                 return res.status(400).json({
-                    error: `Incorrect user_name or password`
+                    error: `Incorrect email or password`
                 })
 
             return AuthService.comparePasswords(loginUser.password, dbUser.password)
                 .then(compareMatch =>{
                     if(!compareMatch)
                     return res.status(400).json({
-                        error: `Incorrect user_name or password`
+                        error: `Incorrect email or password; ${loginUser.password} isn't ${dbUser.password}`
                     })
-                const sub = dbUser.user_name
-                const payload = {user_id: dbUser.id}
+                    const sub = dbUser.agent_email
+                    const payload = {user_id: dbUser.id}
 
-                res.send({
-                    authToken: AuthService.createJwt(sub, payload),
-                })
+                    res.send({
+                        authToken: AuthService.createJwt(sub, payload),
+                        id: dbUser.id
+                    })
                 })
         })
         .catch(next)

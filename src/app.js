@@ -8,6 +8,7 @@ const {NODE_ENV} = require('./config');
 
 //const validateBearerToken = require('./validate-bearer-token');
 const agentRouter = require('./agent/agent-router');
+const authRouter = require('./auth/auth-router');
 const errorHandler = require('./middleware/error-handler');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(cors());
 //app.use(validateBearerToken)
 
 app.use('/api/agents', agentRouter);
+app.use('/auth', authRouter)
 
 app.use(errorHandler)
 
