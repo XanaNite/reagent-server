@@ -27,7 +27,6 @@ const serializeAgent = agent => ({
     price_max: agent.price_max,
     date_created: new Date(agent.date_created),
     date_modified: new Date(agent.date_modified),
-    user_name: xss(agent.user_name),
     password: xss(agent.password),
   })
 
@@ -41,39 +40,66 @@ agentRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) =>{
-    const {first_name, last_name, user_name, password, agent_email, agent_phone} = req.body;
-    const newAgent = {first_name, last_name, user_name, password, agent_email, agent_phone};
+    const {first_name, last_name, password, agent_email, agent_phone} = req.body;
 
-    for(const [key, value] of Object.entries(newAgent)){
-      if(value == null){
+    for(const field of ['first_name', 'last_name', 'password', 'agent_email', 'agent_phone']){
+      if(!req.body[field]){
           return res.status(400).json({
-              error: {message: `Missing '${key}' in request body`}
+              error: {message: `Missing '${field}' in request body`}
           })
       }
     }
 
-    newAgent.agent_phone_type = null;
-    newAgent.city = null;
-    newAgent.state = null;
-    newAgent.zip = null;
-    newAgent.brokerage = null;
-    newAgent.title = null;
-    newAgent.office = null;
-    newAgent.bio = null;
-    newAgent.experience = null;
-    newAgent.slogan = null;
-    newAgent.date_created = new Date();
-    newAgent.date_modified = new Date();
+    const badPassword = AgentService.validatePassword(password)
 
-    const knexInstance = req.app.get('db')
-
-    AgentService.insertAgent(knexInstance, newAgent)
-      .then(agent =>{
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${agent.id}`))
-          .json(serializeAgent(agent))
+    if(badPassword)
+      return res.status(400).json({
+        error: badPassword
       })
+
+    AgentService.hasUserWithEmail(
+      req.app.get('db'),
+      agent_email
+    )
+    .then(hasEmail =>{
+      if(hasEmail)
+        return res.status(400).json({
+          error: `Email already taken`
+        })
+
+      return AgentService.hashPassword(password)
+        .then(hashedPassword => {
+          const newAgent = {
+            first_name,
+            last_name,
+            agent_phone,
+            agent_email,
+            password: hashedPassword,
+            agent_phone_type: null,
+            city: null,
+            state: null,
+            zip: null,
+            brokerage: null,
+            title: null,
+            office: null,
+            bio: null,
+            experience: null,
+            slogan: null,
+            date_created: new Date(),
+            date_modified: new Date()
+          }
+
+      const knexInstance = req.app.get('db')
+
+      return AgentService.insertAgent(knexInstance, newAgent)
+        .then(agent =>{
+          res
+            .status(201)
+            .location(path.posix.join(req.originalUrl, `/${agent.id}`))
+            .json(serializeAgent(agent))
+        })
+        })
+    })
       .catch(next)
   })
 
