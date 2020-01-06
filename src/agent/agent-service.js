@@ -1,3 +1,6 @@
+const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
+const bcrypt = require('bcryptjs')
+
 const AgentService = {
   getAllAgentInfo(db) {
     return db
@@ -62,7 +65,7 @@ const AgentService = {
     return bcrypt.hash(password, 12)
   },
   hasUserWithEmail(db, agent_email){
-    return db('users')
+    return db('agents')
         .where({agent_email})
         .first()
         .then(user => !!user)
