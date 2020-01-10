@@ -115,8 +115,25 @@ agentRouter
   .patch(jsonParser, (req, res, next) =>{
     const {first_name, last_name, title, agent_phone, agent_phone_type, city, state, zip, office, bio, experience, brokerage, slogan} = req.body;
     const agentToUpdate = {first_name, last_name, title, agent_phone, agent_phone_type, city, state, zip, office, bio, experience, brokerage, slogan};
+    const numberOfValues = Object.values(agentToUpdate).filter(Boolean).length;
 
+    if(numberOfValues === 0){
+      return res.status(400).json({
+          error: `Request must contain an updated field`
+      });
+    }
 
+    agentToUpdate.date_modified = new Date();
+
+    AgentService.updateAgent(
+      req.app.get('db'),
+      req.params.agent_id,
+      agentToUpdate
+    )
+    .then(numRowsAffected =>{
+      res.status(204).end();
+    })
+    .catch(next);
   });
 
 /* async/await syntax for promises */

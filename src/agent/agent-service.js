@@ -72,6 +72,11 @@ const AgentService = {
         .first()
         .then(user => !!user);
   },
+  updateAgent(db, id, newAgentFields){
+    return db('agents')
+      .where({id})
+      .update(newAgentFields);
+  },
 };
 
 module.exports = AgentService;
