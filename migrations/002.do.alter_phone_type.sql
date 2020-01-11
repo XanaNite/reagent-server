@@ -1,6 +1,6 @@
 DROP TYPE IF EXISTS phone_type;
 CREATE TYPE phone_type AS ENUM (
-    'cell',
+    'mobile',
     'business',
     'home',
     'fax'
