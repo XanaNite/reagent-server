@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
 const bcrypt = require('bcryptjs');
 
@@ -8,32 +6,6 @@ const AgentService = {
     return db
       .from('agents')
       .select('*');
-/*      .leftJoin(
-        'agent_areas_served AS areas',
-        'agt.id',
-        'areas.agent_id',
-      )
-      .leftJoin(
-        'agent_designations_certs AS certs',
-        'agt.id',
-        'certs.agent_id',
-      )
-      .leftJoin(
-        'agent_specialization AS spec',
-        'agt.id',
-        'spec.agent_id',
-      )
-      .leftJoin(
-        'ratings AS rtng',
-        'agt.id',
-        'rtng.agent_id',
-      )
-      .leftJoin(
-        'recommendations AS recom',
-        'agt.id',
-        'recom.agent_id',
-      )
-      .groupBy('agt.id')*/
   },
   insertAgent(db, newAgent){
     return db

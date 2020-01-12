@@ -1,11 +1,7 @@
-/*jshint esversion: 6 */
-/*jshint esversion: 8 */
-
 const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const AgentService = require('./agent-service');
-const {requireAuth} = require('../middleware/jwt-auth');
 
 const agentRouter = express.Router();
 const jsonParser = express.json();

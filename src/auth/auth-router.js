@@ -1,6 +1,3 @@
-/*jshint esversion: 6 */
-/*jshint esversion: 8 */
-
 const express = require('express');
 const AuthService = require('./auth-service');
 

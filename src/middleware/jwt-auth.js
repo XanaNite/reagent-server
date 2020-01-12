@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 const AuthService = require('../auth/auth-service');
 
 function requireAuth(req, res, next) {
