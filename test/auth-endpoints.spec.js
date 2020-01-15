@@ -6,8 +6,8 @@ const helpers = require('./test-helpers');
 describe('Auth Endpoints', function() {
   let db
 
-  const { testAgents } = helpers.makeAgentsArray()
-  const testAgent = testAgents[0]
+  const testAgents = helpers.makeAgentsArray();
+  const testAgent = testAgents[0];
 
   before('make knex instance', () => {
     db = knex({

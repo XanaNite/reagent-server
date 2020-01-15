@@ -13,7 +13,7 @@ const app = express();
 
 const morganOption = ((NODE_ENV === 'production') ? 'tiny' : 'common',
     {
-        skip: () => NODE_ENV === 'test'
+        skip: () => NODE_ENV === 'test',
     });
 
 app.use(morgan(morganOption));
