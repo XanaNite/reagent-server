@@ -1,6 +1,71 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+function makeUsersArray() {
+  return [
+    {
+      id: 1,
+      first_name: "Test",
+      last_name: "User 1",
+      agent_phone_type: "home",
+      agent_email: "test@gmail.com",
+      password: 'password',
+      agent_phone_type: null,
+      city: null,
+      state: null,
+      zip: null,
+      brokerage: null,
+      title: null,
+      office: null,
+      bio: null,
+      experience: null,
+      slogan: null,
+      date_created: new Date(),
+      date_modified: new Date()
+    },
+    {
+      id: 2,
+      first_name: "Test",
+      last_name: "User 2",
+      agent_phone_type: "home",
+      agent_email: "test@gmail.com",
+      password: 'password',
+      agent_phone_type: null,
+      city: null,
+      state: null,
+      zip: null,
+      brokerage: null,
+      title: null,
+      office: null,
+      bio: null,
+      experience: null,
+      slogan: null,
+      date_created: new Date(),
+      date_modified: new Date()
+    },
+    {
+      id: 3,
+      first_name: "Test",
+      last_name: "User 3",
+      agent_phone_type: "home",
+      agent_email: "test@gmail.com",
+      password: 'password',
+      agent_phone_type: null,
+      city: null,
+      state: null,
+      zip: null,
+      brokerage: null,
+      title: null,
+      office: null,
+      bio: null,
+      experience: null,
+      slogan: null,
+      date_created: new Date(),
+      date_modified: new Date()
+    },
+  ]
+}
+
 function makeAgentsArray() {
     return [
         {
@@ -81,6 +146,21 @@ function seedAgents(db, agents) {
       )
 }
 
+function seedUsers(db, users) {
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }))
+  return db.into('agents').insert(preppedUsers)
+    .then(() =>
+      // update the auto sequence to stay in sync
+      db.raw(
+        `SELECT setval('agents_id_seq', ?)`,
+        [users[users.length - 1].id],
+      )
+    )
+}
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
       subject: user.user_name,
@@ -94,9 +174,11 @@ function cleanTables(db) {
   }
 
 module.exports = {
+  makeUsersArray,
     makeAgentsArray,
     makeAuthHeader,
 
     seedAgents,
+    seedUsers,
     cleanTables
 }
