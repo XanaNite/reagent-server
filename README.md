@@ -3,7 +3,7 @@
 This app is a real estate agent's dashboard that will be editable and supply information to a public profile for users to view
 
 Live: 
-client: https://reagent.now.sh/
+client: https://reagent-app.now.sh
 server:  https://aqueous-lake-82914.herokuapp.com/
 
 Client Repo: https://github.com/XanaNite/reagent.com-client
